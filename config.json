@@ -1,0 +1,21 @@
+{
+  "IRC" : {
+  	"server" : "",
+  	"port" : "",
+  	"username": "",
+  	"channels" : [""],
+  	"identifyPass" : "",
+  	"email" : "",
+  	"notifyFor" : ""
+  },
+  "Twitter" : {
+  	"apiKey" : "",
+  	"apiSecret" : "",
+  	"appCallback" : "",
+  	"requestToken" : "",
+  	"requestTokenSecret" : "",
+  	"accessToken" : "",
+  	"accessTokenSecret" : "",
+  	"username": ""
+  }
+}

@@ -1,0 +1,14 @@
+{
+    "name" : "arduinoIRCListener",
+    "description" : "Puts IRC and Twitter mentions on LCD display",
+    "author" : "Jose Luis Espinoza <psyrax@opiumgarden.org>",
+    "dependencies": {
+        "irc" : "latest",
+        "johnny-five": "latest",
+        "sleep" : "latest",
+        "express": "latest",
+		"twitter" : "latest",
+		"node-twitter-api": "latest"
+    },
+    "scripts": { "start": "node program.js" }
+}
