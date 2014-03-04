@@ -16,14 +16,9 @@ server.listen(1337);
 
 //Logging uncaught exceptions
 process.on('uncaughtException', function(err) {
-    console.log(err);
+  console.log(err);
 });
 
-//Express error control
-app.use(function(err, req, res, next){
-  console.error(err.stack);
-  res.send(500, 'Something broke!');
-});
 //Express app config
 app.configure(function() {
   app.use(express.static(__dirname + '/public'));
@@ -163,10 +158,14 @@ var clients = {
     //lectura del stream de twitter
     twit.stream('user', {track: config.Twitter.username, with: 'user'}, function(stream) {
       stream.on('data', function(data) {
+        console.log(data);
         if( data.text != undefined  && data.user.screen_name != undefined){
           var tuitText = '@' + data.user.screen_name + ':' + data.text;
           fancyPrinter(tuitText, function(){});
-        }     
+        } else if ( data.direct_message != undefined ){
+          var tuitText = data.direct_message.text;
+          fancyPrinter(tuitText, function(){});
+        };
       });
     });
   },
