@@ -2,11 +2,13 @@ var five = require("johnny-five"),
   irc = require('irc'),
   sleep = require('sleep'),
   express = require('express'),
+  exphbs  = require('express3-handlebars'),
   app = express(),
   server = require('http').createServer(app),
+  io = require('socket.io').listen(server),
   twitter = require('twitter'),
   twitterAPI = require('node-twitter-api'),
-  board, lcd, light, shutLight;
+  board, lcd, light, shutLight, socketSend, socketEnable;
 
 //App configuration
 var config = require('./config.json');
@@ -19,12 +21,15 @@ process.on('uncaughtException', function(err) {
   console.log(err);
 });
 
+
 //Express app config
 app.configure(function() {
   app.use(express.static(__dirname + '/public'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
+  app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+  app.set('view engine', 'handlebars');
 });
 
 //Twitter api configuraiton
@@ -158,10 +163,10 @@ var clients = {
     //lectura del stream de twitter
     twit.stream('user', {track: config.Twitter.username, with: 'user'}, function(stream) {
       stream.on('data', function(data) {
-        console.log(data);
         if( data.text != undefined  && data.user.screen_name != undefined){
           var tuitText = '@' + data.user.screen_name + ':' + data.text;
           fancyPrinter(tuitText, function(){});
+          clients.socketEmitter('twitter', data);
         } else if ( data.direct_message != undefined ){
           var tuitText = data.direct_message.text;
           fancyPrinter(tuitText, function(){});
@@ -172,7 +177,7 @@ var clients = {
   expressInit : function(){
     //Send index file on root
     app.get('/', function (req, res) {
-      res.sendFile('index.html');
+      res.render('index');
     });
     //Turn leds off
     app.get('/notifications/read', function (req, res) {
@@ -209,5 +214,14 @@ var clients = {
         }
       });
     });
+  },
+  socketEmitter : function(type,data){
+    app.render(type, {layout: false, 'data': data},function (err, html){
+      io.sockets.emit('update', {'content': html});
+    });
   }
 }
+
+io.sockets.on('connection', function (socket) {
+  socketEnable = true;
+});
