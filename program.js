@@ -170,6 +170,9 @@ var clients = {
         } else if ( data.direct_message != undefined ){
           var tuitText = data.direct_message.text;
           fancyPrinter(tuitText, function(){});
+          if ( tuitText.indexOf("Reddit check") != -1 ) {
+            clients.socketEmitter('reddit', data);
+          };
         };
       });
     });
