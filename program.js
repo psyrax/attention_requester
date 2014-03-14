@@ -39,6 +39,19 @@ var twitterapi = new twitterAPI({
   callback: config.Twitter.appCallback
 });
 
+//Helpers
+hbs = exphbs.create({
+  // Specify helpers which are only registered on this instance.
+  helpers: {
+    urlMaker: function (string) {
+      var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+      string = string.replace(exp, "<a href='$1' target='_blank'>$1</a>");
+      return string;
+    }
+  }
+});
+
+
 //Fancy printing. It prints in the whole LCD
 shutLight;
 function fancyPrinter(message, callback){
@@ -218,7 +231,7 @@ var clients = {
       });
     });
   },
-  socketEmitter : function(type,data){
+  socketEmitter : function (type, data){
     app.render(type, {layout: false, 'data': data},function (err, html){
       io.sockets.emit('update', {'content': html});
     });
