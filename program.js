@@ -5,13 +5,17 @@ var five = require("johnny-five"),
   exphbs  = require('express3-handlebars'),
   app = express(),
   server = require('http').createServer(app),
-  io = require('socket.io').listen(server),
+  io = require('socket.io').listen(server, { log: false }),
   twitter = require('twitter'),
   twitterAPI = require('node-twitter-api'),
+  nodeCouchDB = require("node-couchdb"),
   board, lcd, light, shutLight, socketSend, socketEnable;
 
 //App configuration
 var config = require('./config.json');
+
+//couchDB
+var couch = new nodeCouchDB("localhost", 5984);
 
 //Express port
 server.listen(1337);
@@ -47,10 +51,10 @@ function fancyPrinter(message, callback){
   var rowCounter = 0;
   var colCounter = 0;
   clearTimeout(shutLight);
-  light.fadeIn(500);
+  /*light.fadeIn(500);
   shutLight = setTimeout( function() {
-    //light.fadeOut(2000);
-  }, 5000);
+    light.fadeOut(2000);
+  }, 5000);*/
   for (var i = 0; i < message.length; i++) {
     if(i === 16){
       rowCounter = 1;
@@ -141,6 +145,7 @@ var clients = {
       if(message.indexOf(config.IRC.notifyFor) > -1) {    
         var fullMessage = from + ':' + message;
         fancyPrinter(fullMessage, function (end){});
+        couchInsert(fullMessage);
       }
     });
 
@@ -163,6 +168,7 @@ var clients = {
     //lectura del stream de twitter
     twit.stream('user', {track: config.Twitter.username, with: 'user'}, function(stream) {
       stream.on('data', function(data) {
+        couchInsert(data);
         if( data.text != undefined  && data.user.screen_name != undefined){
           var tuitText = '@' + data.user.screen_name + ':' + data.text;
           fancyPrinter(tuitText, function(){});
@@ -223,6 +229,16 @@ var clients = {
       io.sockets.emit('update', {'content': html});
     });
   }
+}
+
+function couchInsert(doc){
+  couch.uniqid(function (err, ids) { 
+      if (err) return console.error(err);
+      doc._id = ids[0];
+      couch.insert("ar", doc, function (err, resData) {
+          if (err) return console.error(err);
+      });
+  });
 }
 
 io.sockets.on('connection', function (socket) {
