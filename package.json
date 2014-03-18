@@ -10,7 +10,8 @@
 		"twitter" : "latest",
 		"node-twitter-api": "latest",
         "express3-handlebars" : "latest",
-        "socket.io" : "0.9"
+        "socket.io" : "0.9",
+        "node-couchdb" : "latest"
     },
     "scripts": { "start": "node program.js" }
 }

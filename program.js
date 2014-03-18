@@ -52,8 +52,8 @@ function fancyPrinter(message, callback){
   var rowCounter = 0;
   var colCounter = 0;
   clearTimeout(shutLight);
-  /*light.fadeIn(500);
-  shutLight = setTimeout( function() {
+  light.fadeIn(500);
+  /*shutLight = setTimeout( function() {
     light.fadeOut(2000);
   }, 5000);*/
   for (var i = 0; i < message.length; i++) {
