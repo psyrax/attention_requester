@@ -101,7 +101,7 @@ board.on('ready', function() {
     for (var dev in ifaces) {
       var alias=0;
       ifaces[dev].forEach(function(details){
-        if (details.family=='IPv4' && details.address != '127.0.0.1' {
+        if (details.family=='IPv4' && details.address != '127.0.0.1') {
           var printAddress = dev+(alias?':'+alias:''),details.address;
           ++alias;
         }
