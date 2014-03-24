@@ -102,7 +102,7 @@ board.on('ready', function() {
       var alias=0;
       ifaces[dev].forEach(function(details){
         if (details.family=='IPv4' && details.address != '127.0.0.1') {
-          var printAddress = dev+(alias?':'+alias:''),details.address;
+          var printAddress = details.address;
           ++alias;
         }
       });
