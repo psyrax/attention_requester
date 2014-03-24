@@ -1,17 +1,17 @@
 {
   "IRC" : {
-  	"server" : "",
-  	"port" : "",
-  	"username": "",
-  	"channels" : [""],
-  	"identifyPass" : "",
-  	"email" : "",
-  	"notifyFor" : ""
+  	"server" : "irc.oglabs.info",
+  	"port" : "6667",
+  	"username": "psybot",
+  	"channels" : ["#animedia", "#opers", "#pokemex", "#dan"],
+  	"identifyPass" : "soyunbotdenodejs",
+  	"email" : "psyrax@opiumgarden.org",
+  	"notifyFor" : "psyrax"
   },
   "Twitter" : {
-  	"apiKey" : "",
-  	"apiSecret" : "",
-  	"appCallback" : "",
+  	"apiKey" : "lbSJ8iAQ6PIgebMxJUpA",
+  	"apiSecret" : "C0YD02yDPnozcyZrZyZGjn3B4NKmhpgmMxseAkMgU",
+  	"appCallback" : "http://dev.oglabs.info:1337/callback",
   	"requestToken" : "",
   	"requestTokenSecret" : "",
   	"accessToken" : "",

@@ -9,6 +9,8 @@ var five = require("johnny-five"),
   twitter = require('twitter'),
   twitterAPI = require('node-twitter-api'),
   nodeCouchDB = require("node-couchdb"),
+  os=require('os'),
+  ifaces=os.networkInterfaces(),
   board, lcd, light, shutLight, socketSend, socketEnable;
 
 //App configuration
@@ -93,10 +95,19 @@ board.on('ready', function() {
     fancyPrinter('LCD Ready', function(){});
     //Wait 1 seconds before IRC for the lolz
     sleep.sleep(1);
-    clients.irc();
+    //clients.irc();
     //wait 1 seconds before setting express app
     sleep.sleep(1);
-    fancyPrinter('Express ready', function(){
+    for (var dev in ifaces) {
+      var alias=0;
+      ifaces[dev].forEach(function(details){
+        if (details.family=='IPv4' && details.address != '127.0.0.1' {
+          var printAddress = dev+(alias?':'+alias:''),details.address;
+          ++alias;
+        }
+      });
+    }
+    fancyPrinter(printAddress, function(){
       clients.expressInit();
     });
   });
