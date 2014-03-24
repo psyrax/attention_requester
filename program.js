@@ -98,11 +98,12 @@ board.on('ready', function() {
     //clients.irc();
     //wait 1 seconds before setting express app
     sleep.sleep(1);
+    var printAddress;
     for (var dev in ifaces) {
       var alias=0;
       ifaces[dev].forEach(function(details){
         if (details.family=='IPv4' && details.address != '127.0.0.1') {
-          var printAddress = details.address;
+          printAddress = details.address;
           ++alias;
         }
       });
